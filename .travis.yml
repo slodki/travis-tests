@@ -4,7 +4,7 @@ script: |-
     echo "https://$GitHub_auth_token:x-oauth-basic@github.com" >$HOME/.git-credentials
     git config --global user.email "nobody@no.mail"
     git config --global user.name "Travis CI"
-    git tag -f nightly
+    git tag -f same
     git tag new-$TRAVIS_JOB_NUMBER
     git push -f --tags
   fi
@@ -14,7 +14,7 @@ before_deploy: |-
   echo test >a5.txt
   echo test >a5_ół.txt
   ls *.txt
-  curl -H "Authorization: token $GitHub_auth_token" https://api.github.com/repos/$REPO_SLUG/releases
+  curl -H "Authorization: token $GitHub_auth_token" https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases
 
 deploy:
 - provider: releases
