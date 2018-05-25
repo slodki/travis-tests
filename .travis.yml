@@ -1,19 +1,21 @@
-script:
-- if [[ "$TRAVIS_TAG" != "" ]]; then return; fi
-- git config --global credential.helper store
-- echo "https://$GitHub_auth_token:x-oauth-basic@github.com" >$HOME/.git-credentials
-- git config --global user.email "nobody@no.mail"
-- git config --global user.name "Travis CI"
-- git tag -f same
-- git tag new-$TRAVIS_JOB_NUMBER
-- git push -f --tags
+script: |-
+  if [[ "$TRAVIS_TAG" == "" ]]; then
+    git config --global credential.helper store
+    echo "https://$GitHub_auth_token:x-oauth-basic@github.com" >$HOME/.git-credentials
+    git config --global user.email "nobody@no.mail"
+    git config --global user.name "Travis CI"
+    git tag -f same
+    git tag new-$TRAVIS_JOB_NUMBER
+    git push -f --tags
+  fi
 
 before_deploy: |-
   echo test >a5.txt
   echo test >a5_ół.txt
   echo tag = $TRAVIS_TAG
-  echo Filenames before
+  echo Local filenames
   ls *.txt
+  echo Filenames at GH before
   if [[ "$TRAVIS_TAG" == "same" ]]; then
     curl -H "Authorization: token $GitHub_auth_token" \
       https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/tags/$TRAVIS_TAG | \
@@ -21,7 +23,7 @@ before_deploy: |-
   fi
 
 after_deploy: |-
-  echo Filenames after
+  echo Filenames at GH after
   curl -H "Authorization: token $GitHub_auth_token" \
     https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/tags/$TRAVIS_TAG | \
     grep '"name"'
