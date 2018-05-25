@@ -1,0 +1,15 @@
+script:
+- echo test >a5.txt
+- echo test >a5_ół.txt
+- ls -l *.txt
+
+deploy:
+- provider: releases
+  api_key: $GitHub_auth_token
+  file_glob: true
+  file: *.txt
+  skip_cleanup: true
+  prerelease: true
+  overwrite: true
+  on:
+      condition: "${#GitHub_auth_token} != 0"
