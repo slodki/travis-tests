@@ -15,8 +15,8 @@ before_deploy: |-
   echo tag = $TRAVIS_TAG
   echo Local filenames
   ls *.txt
-  echo Filenames at GH before
   if [[ "$TRAVIS_TAG" == "same" ]]; then
+    echo Filenames at GH before
     curl -H "Authorization: token $GitHub_auth_token" \
       https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/tags/$TRAVIS_TAG | \
       grep '"name"'
