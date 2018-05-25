@@ -10,11 +10,20 @@ script: |-
   fi
 
 before_deploy: |-
-  echo tag = $TRAVIS_TAG
   echo test >a5.txt
   echo test >a5_ół.txt
+  echo tag = $TRAVIS_TAG
+  echo Filenames before
   ls *.txt
-  curl -H "Authorization: token $GitHub_auth_token" https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases
+  if [[ "$TRAVIS_TAG" == "same" ]]; then
+    curl -H "Authorization: token $GitHub_auth_token" \
+      https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/tags/$TRAVIS_TAG
+  fi
+
+after_deploy: |-
+  echo Filenames after
+  curl -H "Authorization: token $GitHub_auth_token" \
+    https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/tags/$TRAVIS_TAG
 
 deploy:
 - provider: releases
