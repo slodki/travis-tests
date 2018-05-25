@@ -7,7 +7,7 @@ deploy:
 - provider: releases
   api_key: $GitHub_auth_token
   file_glob: true
-  file: *.txt
+  file: ./*.txt
   skip_cleanup: true
   prerelease: true
   overwrite: true
