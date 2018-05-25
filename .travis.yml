@@ -13,3 +13,4 @@ deploy:
   overwrite: true
   on:
       condition: "${#GitHub_auth_token} != 0"
+      all_branches: true
