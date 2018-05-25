@@ -1,15 +1,23 @@
+env:
+  matrix:
+  - REL=same
+  - REL=new-$TRAVIS_JOB_NUMBER
+
 script:
 - echo test >a5.txt
 - echo test >a5_ół.txt
 - ls -l *.txt
 
+before_deploy:
+- curl https://api.github.com/repos/$REPO_SLUG/releases
+
 deploy:
 - provider: releases
   api_key: $GitHub_auth_token
+  name: $REL
   file_glob: true
   file: ./*.txt
   skip_cleanup: true
-  prerelease: true
   overwrite: true
   on:
       condition: "${#GitHub_auth_token} != 0"
