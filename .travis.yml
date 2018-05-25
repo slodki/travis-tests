@@ -1,5 +1,5 @@
 script:
-- if [[ "$TRAVIS_TAG" != "" ]]; then travis_terminate 0; fi
+- if [[ "$TRAVIS_TAG" != "" ]]; then exit 0; fi
 - git config --global credential.helper store
 - echo "https://$GitHub_auth_token:x-oauth-basic@github.com" >$HOME/.git-credentials
 - git config --global user.email "nobody@no.mail"
@@ -17,18 +17,19 @@ before_deploy: |-
   if [[ "$TRAVIS_TAG" == "same" ]]; then
     curl -H "Authorization: token $GitHub_auth_token" \
       https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/tags/$TRAVIS_TAG | \
-      grep name
+      grep '"name"'
   fi
 
 after_deploy: |-
   echo Filenames after
   curl -H "Authorization: token $GitHub_auth_token" \
     https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/tags/$TRAVIS_TAG | \
-    grep name
+    grep '"name"'
 
 deploy:
 - provider: releases
   api_key: $GitHub_auth_token
+  name: $TRAVIS_TAG
   file_glob: true
   file: ./*.txt
   skip_cleanup: true
