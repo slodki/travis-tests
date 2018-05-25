@@ -7,12 +7,12 @@ script: |-
     git tag -f same
     git tag new-$TRAVIS_JOB_NUMBER
     git push -f --tags
+  else
+    echo test >a5.txt
+    echo test >a5_ół.txt
   fi
 
 before_deploy: |-
-  echo test >a5.txt
-  echo test >a5_ół.txt
-  echo tag = $TRAVIS_TAG
   echo Local filenames
   ls *.txt
   if [[ "$TRAVIS_TAG" == "same" ]]; then
