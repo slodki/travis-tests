@@ -9,22 +9,16 @@ script: |-
     git push -f --tags
   else
     echo test >a5.txt
-    echo test >a5_ół.txt
+    echo test >a5_żółw.txt
+    echo test >a5_~#.txt
   fi
 
-before_deploy: |-
-  echo Local filenames
-  ls *.txt
-  if [[ "$TRAVIS_TAG" == "same" ]]; then
-    echo Filenames at GH before
-    curl -H "Authorization: token $GitHub_auth_token" https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/tags/$TRAVIS_TAG | grep '"name"'
-  fi
+before_deploy:
+- echo Local filenames && ls *.txt
+- [[ "$TRAVIS_TAG" == "same" ]] && list_github.sh
 
-after_deploy: |-
-  echo Filenames at GH after
-  curl -H "Authorization: token $GitHub_auth_token" \
-    https://api.github.com/repos/$TRAVIS_REPO_SLUG/releases/tags/$TRAVIS_TAG | \
-    grep '"name"'
+after_deploy:
+- list_github.sh
 
 deploy:
 - provider: releases
