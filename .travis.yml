@@ -8,8 +8,8 @@ script:
 - echo test >a5_ół.txt
 - ls -l *.txt
 
-before_deploy:
-- curl -H "Authorization: token $GitHub_auth_token" https://api.github.com/repos/$REPO_SLUG/releases
+before_deploy: |-
+  curl -H "Authorization: token $GitHub_auth_token" https://api.github.com/repos/$REPO_SLUG/releases
 
 deploy:
 - provider: releases
