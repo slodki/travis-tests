@@ -15,7 +15,7 @@ script: |-
 
 before_deploy:
 - echo Local filenames && ls *.txt
-- [[ "$TRAVIS_TAG" == "same" ]] && list_github.sh
+- if [[ "$TRAVIS_TAG" == "same" ]]; then list_github.sh; fi
 
 after_deploy:
 - list_github.sh
