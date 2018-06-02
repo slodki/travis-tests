@@ -9,7 +9,7 @@ script: |-
     git push -f --tags
   else
     echo test >a5.txt
-    ## echo test >a5_żółw.txt
+    echo test >a5_żółw.txt
     echo test >a5_ð_æ_©_ŋ.txt
     echo test >$'a5_a a\!a#a$a%a&a\'a\(a\)a+a,a-a.a0123456789a;a=a@aABCDEFGHIJKLMNOPQRSTUVWXYZa[a]a^a_a\`abcdefghijklmnopqrstuvwxyza{a}a~a.txt'
     echo test >$'a5_ !#$%&\'()+,-.0123456789;=@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{}~.txt'
